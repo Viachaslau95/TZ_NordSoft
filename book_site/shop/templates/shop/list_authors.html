@@ -1,0 +1,6 @@
+<div class="list-group" align="left">
+    {% for item in authors %}
+    <a href="{{item.get_absolute_url }}" class="list-group-item list-group-item-action">{{item.name}}  <span class="badge bg-secondary rounded-pill">{{item.cnt}}</span></a>
+
+    {% endfor%}
+</div>

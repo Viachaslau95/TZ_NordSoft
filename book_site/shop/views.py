@@ -1,24 +1,34 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.views.generic import ListView, CreateView
+from django.urls import reverse_lazy
 from .models import Book, Author
+from .forms import BookForm
 
 
-def index(request):
-    books = Book.objects.all()
-    authors = Author.objects.all()
-    context = {
-        'books': books,
-        'title': 'Книги',
-        'authors': authors,
-    }
-    return render(request, 'shop/index.html', context=context)
+class HomeBooks(ListView):
+    model = Book
+    template_name = 'shop/home_books_list.html'
+    context_object_name = 'books'
 
 
-def get_author(request, author_id):
-    books = Book.objects.filter(author_id=author_id)
-    authors = Author.objects.all()
-    author = Author.objects.get(pk=author_id)
-    return render(request, 'shop/author.html', {'books':books, 'authors': authors, 'author': author})
+class BooksByAuthor(ListView):
+    model = Book
+    template_name = 'shop/home_books_list.html'
+    context_object_name = 'books'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['name'] = Author.objects.get(pk=self.kwargs['author_id'])
+        return context
+
+    def get_queryset(self):
+        return Book.objects.filter(author_id=self.kwargs['author_id'])
+
+
+class CreateBook(CreateView):
+    form_class = BookForm
+    template_name = 'shop/add_book.html'
+    success_url = reverse_lazy('home')
 
 
 
