@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Book(models.Model):
@@ -20,6 +21,9 @@ class Book(models.Model):
 
 class Author(models.Model):
     name = models.CharField(max_length=150, db_index=True, verbose_name='Имя')
+
+    def get_absolute_url(self):
+        return reverse('author', kwargs={'author_id': self.pk})
 
     def __str__(self):
         return self.name
