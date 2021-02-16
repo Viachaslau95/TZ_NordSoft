@@ -63,8 +63,12 @@ WSGI_APPLICATION = 'book_site.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'tz_nordsoft',
+        'USER': 'tz_user',
+        'PASSWORD': 'tzpassword',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 

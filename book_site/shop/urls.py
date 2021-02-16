@@ -7,4 +7,3 @@ urlpatterns = [
     path('book/add-book', CreateBook.as_view(), name='add_book')
 
 ]
-# смотреть 40 урок
