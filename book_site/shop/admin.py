@@ -12,6 +12,8 @@ class BookAdmin(admin.ModelAdmin):
     search_fields = ['name', 'price']
     # фильтр
     list_filter = ['author']
+    # поля которые можно изменять в админке
+    list_editable = ['price']
 
     def get_photo(self, obj):
         if obj.photo:

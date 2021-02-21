@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, CreateView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.paginator import Paginator
+from cart.forms import CartAddBookForm
+
 
 from .models import Book, Author
 from .forms import BookForm
@@ -38,6 +39,11 @@ class CreateBook(LoginRequiredMixin, CreateView):
     raise_exception = True
 
 
+def book_detail(request, id):
+    book = get_object_or_404(Book, id=id)
+    cart_book_form = CartAddBookForm()
+    return render(request, 'shop/book_detail.html', {'book': book,
+                                                     'cart_book_form': cart_book_form})
 
 
 

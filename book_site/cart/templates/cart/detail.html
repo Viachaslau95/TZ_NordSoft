@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}
+Корзина
+{% endblock %}
+
+{% block sidebar %}
+{% include 'inc/_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+<h1>Твоя корзина</h1>
+
+<div class="card-body" style="position: absolute" >
+    {% for item in cart %}
+    {% with book=item.book %}
+    <div class="media">
+        <a href="{{ book.get_absolute_url }}">
+            <img src="{% if book.photo %}
+                {{ book.photo.url }}
+                {% endif %}"
+                 align="left" width="50" height="60"
+                 class="mr-3" hspace="10">
+        </a>
+
+        <div class="media body">
+            <h5 class="card-title">{{book.name}}</h5>
+            <form action="{% url 'cart:cart_add' book.id %}" method="post">
+                {{ item.update_quantity_form.quantity }}
+                {{ item.update_quantity_form.update }}
+                <input type="submit" value="Обновить">
+                {% csrf_token %}
+            </form>
+            <div>
+                <a href="{% url 'cart:cart_remove' book.id %}" >Удалить</a>
+            </div>
+            <div>
+                кол-во книг:{{ item.quantity }}
+            </div>
+
+            <div>
+                <p class="num">$ {{ item.price }}</p>
+            </div>
+
+            {% endwith %}
+            {% endfor %}
+            <div class="card-footer text-muted">
+                <p> Всего</p>
+                <p colspan="4"></p>
+                <p class="num">${{ cart.get_total_price }}</p>
+
+                <p class="text-right">
+                    <a href="{% url 'home' %}" class="btn btn-primary">В магазин</a>
+                    <a href="#" class="btn btn-success">Оформить заказ</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

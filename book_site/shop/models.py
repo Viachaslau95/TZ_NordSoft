@@ -10,6 +10,9 @@ class Book(models.Model):
     number = models.PositiveIntegerField(verbose_name='остаток')  # Это поле для хранения остатков данного продукта.
     author = models.ForeignKey('Author', on_delete=models.CASCADE, null=True, verbose_name='Автор')
 
+    def get_absolute_url(self):
+        return reverse('book_detail', kwargs={'id': self.pk})
+
     def __str__(self):
         return self.name
 
