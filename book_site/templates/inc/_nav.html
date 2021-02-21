@@ -13,7 +13,18 @@
                 <li class="nav-item"><a class="nav-link" href="{% url 'add_book' %}">Добавить книгу</a></li>
             {%endif%}
         </ul>
-
+        <div class="cart">
+            {% with total_items=cart|length %}
+            {% if cart|length > 0 %}
+            В корзине:
+            <a href="{% url 'cart:cart_detail' %}">
+                {{total_items}}шт,${{cart.get_total_price}}
+            </a>
+            {% else %}
+            Корзина пустая
+            {% endif %}
+            {% endwith %}
+        </div>
         <form class="d-flex">
             <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Поиск</button>
