@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block sidebar %}
+{% include 'inc/_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+    <h1>Оформление заказа</h1>
+    <div class="order-info">
+        <h3>Ваш заказ</h3>
+        <ul>
+            {% for item in cart %}
+                <b><li style="color: #4f5050">
+                    {{ item.quantity }}x {{ item.book.name }}
+                    <span>${{ item.total_price }}</span>
+                </li></b>
+            {% endfor %}
+        </ul>
+        <b><p style="color: #ea0000">Итоговая цена заказа: ${{ cart.get_total_price }}</p></b>
+    </div>
+    <form action="." method="post" class="order-form">
+        {{ form.as_p }}
+         <button  type="submit" class="btn btn-primary btn-block">Разместить заказ</button>
+        {% csrf_token %}
+    </form>
+{% endblock %}
