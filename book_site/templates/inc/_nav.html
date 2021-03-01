@@ -1,30 +1,20 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="{% url 'home' %}">Магазин Книг</a>
+    <a class="navbar-brand" style="color: #000000" href="{% url 'home' %}">Магазин Книг</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false"
             aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Главная</a></li>
+            <li class="nav-item"><a class="nav-link" style="color: #000000" href="{% url 'home' %}"><i class="fas fa-home"></i>Главная</a></li>
             {% if request.user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'add_book' %}">Добавить книгу</a></li>
+                <li class="nav-item"><a class="nav-link" style="color: #000000" href="{% url 'add_book' %}"><i class="fas fa-book-open"></i>Добавить книгу</a></li>
             {%endif%}
+
         </ul>
-        <div class="cart">
-            {% with total_items=cart|length %}
-            {% if cart|length > 0 %}
-            В корзине:
-            <a href="{% url 'cart:cart_detail' %}">
-                {{total_items}}шт,${{cart.get_total_price}}
-            </a>
-            {% else %}
-            Корзина пустая
-            {% endif %}
-            {% endwith %}
-        </div>
         <form class="d-flex">
             <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Поиск</button>

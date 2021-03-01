@@ -1,2 +1,26 @@
 {% load shop_tags %}
+<span class="navbar-text" style="color: #0a0a0a">
+            {% if request.user.is_authenticated %}
+                <i class="fas fa-user-check"></i>
+                Привет, {{ user.first_name }} | <a href="{% url 'account:logout' %}" style="color: red">Logout</a>
+            {% else %}
+                <a href="{% url 'account:register'%}" style=" color:#030303 ">Register</a> | <a href="{% url 'account:login' %} " style="color: #000000">Login</a>
+            {% endif %}
+</span>
+
+<div class="cart" style="color: #000000">
+    {% with total_items=cart|length %}
+    {% if cart|length > 0 %}
+    <i class="fas fa-shopping-cart"></i>
+    В корзине:
+    <a href="{% url 'cart:cart_detail' %}">
+        {{total_items}}шт,${{cart.get_total_price}}
+    </a>
+    {% else %}
+    <i class="fas fa-shopping-cart"></i>
+    Корзина пуста
+    {% endif %}
+    {% endwith %}
+</div>
+<br/>
 {% show_authors %}

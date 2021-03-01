@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+{% include 'inc/_sidebar.html' %}
+{%endblock%}
+
+{% block title %}Log-in{% endblock %}
+{% block content %}
+    <h1>Log-in</h1>
+    <p>Пожалуйста, введите Email и пароль:</p>
+    <form action="." method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <button  type="submit" class="btn btn-primary btn-block">Вход</button>
+    </form>
+{% endblock %}

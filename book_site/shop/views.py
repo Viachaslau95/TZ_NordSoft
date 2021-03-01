@@ -35,7 +35,6 @@ class CreateBook(LoginRequiredMixin, CreateView):
     form_class = BookForm
     template_name = 'shop/add_book.html'
     success_url = reverse_lazy('home')
-    # login_url = '/admin/'
     raise_exception = True
 
 
