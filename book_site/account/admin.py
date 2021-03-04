@@ -4,7 +4,7 @@ from account.models import Account
 
 
 class AccountAdmin(UserAdmin):
-    list_display = ('id', 'email', 'first_name', 'last_name', 'phone', 'is_admin', 'is_staff')
+    list_display = ('id', 'email', 'first_name', 'last_name', 'is_admin', 'is_active')
     search_fields = ('email', 'first_name', 'last_name',)
     list_display_links = ['email']
 
@@ -16,8 +16,3 @@ class AccountAdmin(UserAdmin):
 
 admin.site.register(Account, AccountAdmin)
 
-# try:
-#     Account.objects.get_by_natural_key('admin')
-# except Account.DoesNotExist:
-#     Account.objects.create_superuser(
-#         'test@mail.ru', 'fntest', 'lntest', '777', 'test')
