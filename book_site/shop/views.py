@@ -1,12 +1,44 @@
+from django.db.models import Q
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, TemplateView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from cart.forms import CartAddBookForm
+from rest_framework import generics
+from rest_framework.views import APIView
+import csv
 
+from cart.forms import CartAddBookForm
 
 from .models import Book, Author
 from .forms import BookForm
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from django_filters.rest_framework import DjangoFilterBackend
+from .serializers import BookSerializer, AuthorSerializer, BookDetailSerializer
+from shop.utils import export_to_csv
+from .service import BookFilter
+
+
+class AllBook(generics.ListAPIView):
+    model = Book
+    serializer_class = BookSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = BookFilter
+    queryset = Book.objects.all()
+
+
+class BookApi(APIView):
+    def get(self, request, pk):
+        book = Book.objects.get(id=pk)
+        serializer = BookDetailSerializer(book)
+        return Response(serializer.data)
+
+
+class AllAuthors(generics.ListAPIView):
+    model = Author
+    serializer_class = AuthorSerializer
+    queryset = Author.objects.all()
 
 
 class HomeBooks(ListView):
@@ -31,6 +63,7 @@ class BooksByAuthor(ListView):
         return Book.objects.filter(author_id=self.kwargs['author_id'])
 
 
+# Добавление новых книг
 class CreateBook(LoginRequiredMixin, CreateView):
     form_class = BookForm
     template_name = 'shop/add_book.html'
@@ -45,4 +78,29 @@ def book_detail(request, id):
                                                      'cart_book_form': cart_book_form})
 
 
+# Поиск книг на сайте
+class Search(TemplateView):
+    template_name = 'shop/search.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        kw = self.request.GET.get('keyword')
+        results = Book.objects.filter(Q(name__icontains=kw) | Q(description__icontains=kw))
+        context['results'] = results
+        return context
+
+
+# Экспорт CSV всех книг
+def get_books_data():
+    queryset = Book.objects.all()
+    fields = ['Название книги', 'Автор книги']
+    titles = ['name', 'author']
+    file_name = 'Books'
+    return queryset, titles, fields, file_name
+
+
+class BooksExportAcCSV(APIView):
+    def get(self, request):
+        books = get_books_data()
+        data = export_to_csv(queryset=books[0], fields=books[1], titles=books[2], file_name=books[3])
+        return data

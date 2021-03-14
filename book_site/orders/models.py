@@ -9,7 +9,7 @@ class Order(models.Model):
     address = models.CharField(max_length=250, verbose_name='Адрес')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    paid = models.BooleanField(default=False)
+    paid = models.BooleanField(default=True)
 
     class Meta:
         ordering = ('-created',)

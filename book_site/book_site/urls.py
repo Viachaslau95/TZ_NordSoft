@@ -3,9 +3,10 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('captcha/', include('captcha.urls')),
+    path('api-auth/', include('rest_framework.urls')),
     path('cart/', include(('cart.urls', 'cart'), namespace='cart')),
     path('orders/', include(('orders.urls', 'orders'), namespace='orders')),
     path('', include(('account.urls', 'account'), namespace='account')),
