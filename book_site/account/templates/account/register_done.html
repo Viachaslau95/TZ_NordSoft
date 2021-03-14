@@ -7,8 +7,10 @@
 {%endblock%}
 
 {% block content %}
-    <h1>Добро пожаловать!</h1>
-    <br/>
-<p>Ваш аккаунт успешно создан! Проверьте вашу электронную почту и активируйте аккаунт</p>
-<a class="btn btn-primary btn-block" href="{% url 'account:login' %}">Войти</a>
+<h1>Добро пожаловать!</h1>
+<br/>
+<p>Ваш аккаунт успешно создан! Мы выслали вам пароль на электронную почту!</p>
+<div>
+    <a href="{% url 'account:login'  %}" class="btn btn-primary ">Вход</a>
+</div>
 {% endblock %}

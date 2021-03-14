@@ -5,7 +5,7 @@ from .models import Book, Author
 
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'author', 'price', 'number', 'get_photo']
+    list_display = ['id', 'name', 'author', 'price']
     # ссылка на объект
     list_display_links = ['name']
     # поиск по полям

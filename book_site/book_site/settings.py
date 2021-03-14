@@ -24,6 +24,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'captcha',
+    'rest_framework',
+    'django_filters',
     'shop.apps.ShopConfig',
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
@@ -132,3 +135,13 @@ CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
+CAPTCHA_FONT_SIZE = 30
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
+CAPTCHA_NOISE_FUNCTIONS = None
+CAPTCHA_LETTER_ROTATION = None
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ),
+}
