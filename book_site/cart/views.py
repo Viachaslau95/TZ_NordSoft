@@ -11,10 +11,7 @@ def cart_add(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     form = CartAddBookForm(request.POST)
     if form.is_valid():
-        cd = form.cleaned_data
-        cart.add(book=book,
-                 quantity=cd['quantity'],
-                 update_quantity=cd['update'])
+        cart.add(book=book)
     return redirect('cart:cart_detail')
 
 

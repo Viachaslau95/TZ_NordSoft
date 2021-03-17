@@ -1,8 +1,6 @@
 from django import forms
 from django.contrib.auth import authenticate
-from django.contrib.auth.forms import UserCreationForm
 from captcha.fields import CaptchaField
-
 from account.models import Account
 
 
@@ -23,12 +21,11 @@ class RegistrationForm(forms.ModelForm):
 class LoginForm(forms.Form):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-    captcha = CaptchaField()
-
+    captcha = CaptchaField(label='Решите простой пример')
 
     class Meta:
         model = Account
-        fields = ('email', 'password')
+        fields = ('email', 'password', 'captcha')
 
     def clean(self):
         email = self.cleaned_data['email']

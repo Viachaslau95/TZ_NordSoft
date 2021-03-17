@@ -13,7 +13,7 @@
         <ul>
             {% for item in cart %}
                 <b><li style="color: #4f5050">
-                    {{ item.quantity }}x {{ item.book.name }}
+                    {{ item.quantity }} x {{ item.book.name }}
                     <span>${{ item.total_price }}</span>
                 </li></b>
             {% endfor %}

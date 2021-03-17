@@ -5,15 +5,14 @@ from .models import Book, Author
 
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'author', 'price']
+    list_display = ['id', 'name', 'author', 'bought_books']
     # ссылка на объект
     list_display_links = ['name']
     # поиск по полям
-    search_fields = ['name', 'price']
+    search_fields = ['name']
     # фильтр
     list_filter = ['author']
     # поля которые можно изменять в админке
-    list_editable = ['price']
 
     def get_photo(self, obj):
         if obj.photo:

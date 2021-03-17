@@ -1,10 +1,11 @@
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, CreateView, TemplateView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import generics
+from django.db.models import Sum
 from rest_framework.views import APIView
 import csv
 
@@ -77,6 +78,18 @@ def book_detail(request, id):
     return render(request, 'shop/book_detail.html', {'book': book,
                                                      'cart_book_form': cart_book_form})
 
+# Статистика проданных книг
+# def stat_all_book(request):
+#     book_all = Book.objects.all().aggregate(bought_books=Sum('bought_books'))
+#     b = Book.objects.all()
+#     book = []
+#     for a in b:
+#         if a.name and a.bought_books:
+#             book.append(a)
+#
+#     return render(request, 'shop/stat_books.html', {'book_all': book_all,
+#                                                     'book': book})
+
 
 # Поиск книг на сайте
 class Search(TemplateView):
@@ -104,3 +117,4 @@ class BooksExportAcCSV(APIView):
         books = get_books_data()
         data = export_to_csv(queryset=books[0], fields=books[1], titles=books[2], file_name=books[3])
         return data
+

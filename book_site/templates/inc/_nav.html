@@ -13,6 +13,7 @@
             {% if request.user.is_authenticated %}
                 <li class="nav-item"><a class="nav-link" style="color: #000000" href="{% url 'add_book' %}"><i class="fas fa-book-open"></i>Добавить книгу</a></li>
                 <li class="nav-item"><a class="nav-link" style="color: #000000" href="{% url 'export' %}"><i class="fas fa-download"></i>Скачать список книг</a></li>
+
             {%endif%}
 
 
