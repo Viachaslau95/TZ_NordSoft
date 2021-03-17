@@ -1,5 +1,7 @@
 from decimal import Decimal
 from django.conf import settings
+from django.db.models import F
+
 from shop.models import Book
 
 
@@ -30,15 +32,25 @@ class Cart(object):
         return sum(item['quantity'] for item in self.cart.values())
 
     def add(self, book, quantity=1, update_quantity=False):
+
+        # Book.objects.filter(pk=book.pk).update(bought_books=F('bought_books') + 1)
+        # book.bought_books += 1
+
         book_id = str(book.id)
+
         if book_id not in self.cart:
             self.cart[book_id] = {'quantity': 0,
                                   'price': str(book.price)}
+
         if update_quantity:
             self.cart[book_id]['quantity'] = quantity
+
         else:
             self.cart[book_id]['quantity'] += quantity
+
         self.save()
+        Book.objects.filter(pk=book.pk).update(bought_books=F('bought_books') + 1)
+        book.bought_books += 1
 
     def save(self):
         # обновление сессии cart
@@ -47,6 +59,8 @@ class Cart(object):
         self.session.modified = True
 
     def remove(self, book):
+        Book.objects.filter(pk=book.pk).update(bought_books=F('bought_books') - 1)
+        book.bought_books -= 1
         book_id = str(book.id)
         if book_id in self.cart:
             del self.cart[book_id]

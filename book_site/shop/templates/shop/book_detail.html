@@ -24,6 +24,7 @@
                 <h5 class="card-title">{{book.name}}</h5>
                 <p class="card-text">{{book.description}}</p>
                 <p class="price" style="display: table-row">${{ book.price }}</p>
+                <p class="price" style="display: table-row">Куплено книг: {{ book.bought_books }}</p>
                 <form action="{% url 'cart:cart_add' book.id %}" method="post">
                     {{ cart_book_form }}
                     {% csrf_token %}

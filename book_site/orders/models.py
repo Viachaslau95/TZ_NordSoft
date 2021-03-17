@@ -1,4 +1,9 @@
+from datetime import timezone
+
 from django.db import models
+from django.db.models import F
+from django.shortcuts import get_object_or_404
+
 from shop.models import Book
 
 
@@ -19,6 +24,7 @@ class Order(models.Model):
     def __str__(self):
         return 'Order {}'.format(self.id)
 
+
     def get_total_cost(self):
         return sum(item.get_cost() for item in self.items.all())
 
@@ -34,3 +40,4 @@ class OrderItem(models.Model):
 
     def get_cost(self):
         return self.price * self.quantity
+
