@@ -1,4 +1,5 @@
 import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -8,7 +9,7 @@ CART_SESSION_ID = 'cart'
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'i@v%0tfn2mn9aoy9c^+oo3vjmtp00el$g+xvnzj)75!yzhin29'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -72,9 +73,9 @@ WSGI_APPLICATION = 'book_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'tz_nordsoft',
-        'USER': 'tz_user',
-        'PASSWORD': 'tzpassword',
+        'NAME': config('DATABASE_NAME'),
+        'USER': config('DATABASE_USER'),
+        'PASSWORD': config('DATABASE_PASS'),
         'HOST': 'localhost',
         'PORT': '',
     }
@@ -125,8 +126,8 @@ MEDIA_URL = '/media/'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'nordtest1995@gmail.com'
-EMAIL_HOST_PASSWORD = 'gjrfqae30'
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 
 # Celery
