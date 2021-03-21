@@ -11,7 +11,7 @@ class Book(models.Model):
     bought_books = models.IntegerField(default=0, verbose_name='Купленно книг')
 
     def get_absolute_url(self):
-        return reverse('book_detail', kwargs={'id': self.pk})
+        return reverse('book_detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         return f'{self.name} {self.bought_books}'

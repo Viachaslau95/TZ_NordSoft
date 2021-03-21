@@ -1,24 +1,18 @@
-from django.db.models import Q, Count
-from django.http import HttpResponse
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, CreateView, TemplateView
+from django.db.models import Q
+from django.views.generic import ListView, CreateView, TemplateView, DetailView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import generics
-from django.db.models import Sum
-from rest_framework.views import APIView
-import csv
 
-from cart.forms import CartAddBookForm
 
-from .models import Book, Author
-from .forms import BookForm
+from shop.models import Book, Author
+from shop.forms import BookForm
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django_filters.rest_framework import DjangoFilterBackend
-from .serializers import BookSerializer, AuthorSerializer, BookDetailSerializer
+from shop.serializers import BookSerializer, AuthorSerializer, BookDetailSerializer
 from shop.utils import export_to_csv
-from .service import BookFilter
+from shop.filters import BookFilter
 
 
 class AllBook(generics.ListAPIView):
@@ -72,23 +66,9 @@ class CreateBook(LoginRequiredMixin, CreateView):
     raise_exception = True
 
 
-def book_detail(request, id):
-    book = get_object_or_404(Book, id=id)
-    cart_book_form = CartAddBookForm()
-    return render(request, 'shop/book_detail.html', {'book': book,
-                                                     'cart_book_form': cart_book_form})
-
-# Статистика проданных книг
-# def stat_all_book(request):
-#     book_all = Book.objects.all().aggregate(bought_books=Sum('bought_books'))
-#     b = Book.objects.all()
-#     book = []
-#     for a in b:
-#         if a.name and a.bought_books:
-#             book.append(a)
-#
-#     return render(request, 'shop/stat_books.html', {'book_all': book_all,
-#                                                     'book': book})
+class BookDetail(DetailView):
+    model = Book
+    template_name = 'shop/book_detail.html'
 
 
 # Поиск книг на сайте
@@ -104,6 +84,13 @@ class Search(TemplateView):
 
 
 # Экспорт CSV всех книг
+class BooksExportAcCSV(APIView):
+    def get(self, request):
+        books = get_books_data()
+        data = export_to_csv(queryset=books[0], fields=books[1], titles=books[2], file_name=books[3])
+        return data
+
+
 def get_books_data():
     queryset = Book.objects.all()
     fields = ['Название книги', 'Автор книги']
@@ -112,9 +99,5 @@ def get_books_data():
     return queryset, titles, fields, file_name
 
 
-class BooksExportAcCSV(APIView):
-    def get(self, request):
-        books = get_books_data()
-        data = export_to_csv(queryset=books[0], fields=books[1], titles=books[2], file_name=books[3])
-        return data
+
 

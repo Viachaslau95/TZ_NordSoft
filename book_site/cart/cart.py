@@ -33,9 +33,6 @@ class Cart(object):
 
     def add(self, book, quantity=1, update_quantity=False):
 
-        # Book.objects.filter(pk=book.pk).update(bought_books=F('bought_books') + 1)
-        # book.bought_books += 1
-
         book_id = str(book.id)
 
         if book_id not in self.cart:
