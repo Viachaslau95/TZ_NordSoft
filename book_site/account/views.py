@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from account.forms import RegistrationForm, LoginForm
-from .tasks import send_password
+from account.tasks import send_password
 
 
 def registration_view(request):
