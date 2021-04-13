@@ -13,6 +13,8 @@ def send_password(account_id):
             allowed_chars="abcdefghjkmnpqrstuvwxyz01234567889"
         )
     )
-    send_mail('Welcome', message, user.email, recipient_list=[user.email])
+    send_mail('Welcome, this is your secret password', message, user.email, recipient_list=[user.email])
     user.set_password(message)
     user.save()
+
+

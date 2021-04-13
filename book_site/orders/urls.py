@@ -1,6 +1,6 @@
 from django.conf.urls import url
-from .views import order_create
+from .views import OrderCreateView
 
 urlpatterns = [
-    url('create/', order_create, name='order_create'),
+    url('create/', OrderCreateView.as_view(), name='order_create'),
 ]

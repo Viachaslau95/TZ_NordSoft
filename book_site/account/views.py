@@ -1,43 +1,47 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
+
+from django.views.generic import CreateView, FormView
+from django.views.generic.base import View
+
 from account.forms import RegistrationForm, LoginForm
+from account.models import Account
 from account.tasks import send_password
 
 
-def registration_view(request):
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = True
-            user.save()
-            send_password.delay(user.id)
-            return render(request, 'account/register_done.html', {'form': form})
-    else:
-        form = RegistrationForm()
-    return render(request, 'account/register.html', {'form': form})
+class RegistrationView(CreateView):
+    model = Account
+    form_class = RegistrationForm
+    success_url = '/login'
+    template_name = 'account/register.html'
+
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user.is_active = True
+        user.save()
+        send_password.delay(user.id)
+        return super().form_valid(form)
 
 
-def user_login(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
+class AuthenticationForm(FormView):
+    template_name = 'account/login.html'
+    form_class = LoginForm
+    success_url = '/'
+
+    def form_valid(self, form, ):
         if form.is_valid():
-            email = request.POST['email']
-            password = request.POST['password']
+            email = self.request.POST['email']
+            password = self.request.POST['password']
             user = authenticate(email=email, password=password)
-            login(request, user)
+            login(self.request, user)
             return redirect('home')
-    else:
-        form = LoginForm()
-    return render(request, 'account/login.html', {'form': form})
+        else:
+            form = LoginForm()
+        return render(self.request, 'account/login.html', {'form': form})
 
 
-def user_logout(request):
-    logout(request)
-    return redirect('account:login')
-
-
-
-
-
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect('account:login')
 

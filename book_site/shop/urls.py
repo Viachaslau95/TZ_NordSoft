@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import HomeBooks, BooksByAuthor, \
+from shop.views import HomeBooks, BooksByAuthor, \
     CreateBook, BookDetail, \
     AllBook, AllAuthors, \
     BookApi, Search, BooksExportAcCSV

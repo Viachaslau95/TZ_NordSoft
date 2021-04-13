@@ -86,17 +86,17 @@ class Search(TemplateView):
 # Экспорт CSV всех книг
 class BooksExportAcCSV(APIView):
     def get(self, request):
-        books = get_books_data()
+        books = self.get_books_data()
         data = export_to_csv(queryset=books[0], fields=books[1], titles=books[2], file_name=books[3])
         return data
 
-
-def get_books_data():
-    queryset = Book.objects.all()
-    fields = ['Название книги', 'Автор книги']
-    titles = ['name', 'author']
-    file_name = 'Books'
-    return queryset, titles, fields, file_name
+    @staticmethod
+    def get_books_data():
+        queryset = Book.objects.all()
+        fields = ['Название книги', 'Автор книги']
+        titles = ['name', 'author']
+        file_name = 'Books'
+        return queryset, titles, fields, file_name
 
 
 

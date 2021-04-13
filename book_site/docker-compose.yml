@@ -1,0 +1,38 @@
+version: '3.7'
+services:
+  postgres:
+    image: postgres:12
+    restart: "always"
+    hostname: postgres
+    networks:
+      - bookshop
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - 5433:5433
+    env_file: env-files/docker_postgres.env
+
+  app:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8080
+    volumes:
+      - .:/usr/src/TZ_NordSoft
+    ports:
+      - 8080:8080
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    networks:
+      - bookshop
+
+networks:
+  bookshop:
+    driver: bridge
+
+
+volumes:
+  postgres_data:
+
+
+
