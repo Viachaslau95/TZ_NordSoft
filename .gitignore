@@ -1,4 +1,6 @@
 celerybeat-schedule
 .idea
 .env
+book_site/env-files
+test.py
 
